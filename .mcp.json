@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "neural-seam-runtime": {
+      "command": "neural-seam",
+      "args": ["serve", "--project-from-cwd"]
+    }
+  }
+}

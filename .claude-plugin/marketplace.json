@@ -1,0 +1,19 @@
+{
+  "name": "neuralseam",
+  "description": "Marketplace do Neural Seam para Claude Code (adapters de host e extensoes).",
+  "owner": {
+    "name": "Neural Seam",
+    "url": "https://github.com/NeuralSeam"
+  },
+  "plugins": [
+    {
+      "name": "neural-seam",
+      "source": "./",
+      "description": "Adapter de host Claude Code do Neural Seam (MCP neural-seam-runtime + hooks de lifecycle + comandos /neural-seam:ns-*).",
+      "version": "0.1.0",
+      "author": {
+        "name": "Neural Seam"
+      }
+    }
+  ]
+}

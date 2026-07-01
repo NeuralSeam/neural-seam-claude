@@ -1,0 +1,13 @@
+{
+  "name": "neural-seam",
+  "version": "0.1.0",
+  "description": "Adapter de host Claude Code do Neural Seam: registra o MCP server neural-seam-runtime, os hooks de lifecycle e os comandos /neural-seam:ns-*. Requer o binario `neural-seam` no PATH (instalador/one-liner) e um projeto conectado via `neural-seam login` + `neural-seam connect`.",
+  "author": {
+    "name": "Neural Seam",
+    "url": "https://github.com/NeuralSeam"
+  },
+  "homepage": "https://github.com/NeuralSeam/neural-seam-claude",
+  "repository": "https://github.com/NeuralSeam/neural-seam-claude",
+  "license": "MIT",
+  "keywords": ["neural-seam", "mcp", "harness", "claude-code"]
+}
