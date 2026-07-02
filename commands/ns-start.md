@@ -1,34 +1,31 @@
 ---
-description: "Neural Seam: orquestra o inicio do projeto (check -> login/connect/setup -> insumos -> cards)."
+description: "Neural Seam: motor guiado - le o estado e avanca 1 passo sensato (anti-burro), chamando as atomicas."
 ---
 
-# /neural-seam:ns-start $ARGUMENTS
+# /neural-seam:ns-start
 
-Comando gerenciado pelo Neural Seam. Orquestra o inicio de um projeto, do diagnostico ate transformar o backlog em cards. Toda inferencia nasce de uma acao manual do desenvolvedor (P2): voce apresenta os prompts, o desenvolvedor decide gerar.
+Comando gerenciado pelo Neural Seam. E a **porta da frente guiada**: le o estado do projeto e conduz
+voce pelo proximo passo, sem refazer o que ja esta pronto (convergente). Toda inferencia nasce de uma
+acao manual do dev (P2): voce apresenta os prompts, o dev decide gerar.
+
+Ele **nao reimplementa** nada - delega as mesmas transicoes atomicas (`ns-create`, `ns-connect`,
+`ns-generate`, ...). Rode-o quantas vezes quiser: sempre faz so o delta.
 
 ## Fluxo a executar
 
-### 1. Diagnostico e preparacao
-
 1. Chame `mcp__neural-seam-runtime__check_setup`.
-2. Trate o `status` (a logica e a mesma de `/neural-seam:ns-check`):
+2. Trate o `status` avancando **um** passo sensato (mesma tabela do `/neural-seam:ns-status`):
+
    - `needs_login` -> peca `neural-seam login` e pare ate concluir.
-   - `needs_setup` (sem projeto) -> guie a criacao pelo wizard da bridge (`setup_url`); ou, se o desenvolvedor ja tem um projeto no Neural Seam, rode `/neural-seam:ns-sync <projectId>`.
-   - `needs_connect` -> rode `/neural-seam:ns-sync <projectId>` para o projeto existente.
-   - `import_candidate` -> peca `neural-seam import`.
-   - `trial_expired` / `unsupported` -> mostre a `message` e pare.
-   - `ok` -> siga para o passo 2.
+   - `needs_setup` -> apresente o `setup_url` (wizard da bridge) e pare; o dev cria o projeto la. Ao criar, o manifesto e gravado no diretorio e o proximo `check_setup` ja vem `ok` (o `project_id` sai do manifesto - o dev nao digita id). Equivale a `/neural-seam:ns-create`.
+   - `needs_connect` -> apresente o `connect_url` (UI da bridge, onde o dev escolhe/vincula o projeto) e pare. Equivale a `/neural-seam:ns-connect`.
+   - `import_candidate` -> peca `neural-seam import` (mostre `detected_indicators`).
+   - `trial_expired` / `unsupported` -> mostre a `message` (+ `upgrade_url` / peca `neural-seam upgrade`) e pare.
+   - `ok` -> siga para o passo 3.
 
-### 2. Geracao de insumos (apenas com status `ok`)
+3. Com `status = ok`:
+   - Se `pending_jobs > 0` (ha backlog a gerar), ofereca rodar `/neural-seam:ns-generate` para gerar os insumos e criar os cards. **Nao submeta a geracao sozinho** - apresente e aguarde o dev confirmar.
+   - Caso contrario, o projeto ja esta em regime de trabalho: sugira `/neural-seam:ns-list` (ver cards) e `/neural-seam:ns-exec <id>` (implementar um card).
 
-Siga o runbook `docs/flows/e2e-insumo-generation.md`:
-
-1. Chame `mcp__neural-seam-runtime__next_job`. Ele consome o job pendente `claude.generate-insumos` e retorna `prompt` (o prompt de geracao renderizado) + `action_kind`. Apresente o `prompt` ao desenvolvedor; **nao submeta nada automaticamente**.
-2. Quando o desenvolvedor confirmar, gere os insumos: a spec do projeto, os docs de discovery (glossario, historias de usuario, modelo de dominio) e o backlog.
-3. Persista com `mcp__neural-seam-runtime__save_insumos`, passando os campos gerados (`spec`, `glossary`, `user_stories`, `domain_model`, `backlog`). A tool escreve os artifacts no backend e copias em disco; confira o JSON de retorno.
-
-### 3. Backlog em cards
-
-Para cada item do backlog gerado, chame `mcp__neural-seam-runtime__create_activity` com `kind` (um de TECH, FEATURE, IMPROVE, BUG, VERIFY), `title` e `description`. Guarde o `id` retornado de cada card.
-
-Ao final, resuma ao desenvolvedor: insumos persistidos e cards criados. Se qualquer tool retornar `error` (rede/auth), pare e oriente `neural-seam login` ou `/neural-seam:ns-doctor` em vez de seguir adiante.
+4. Ao terminar cada passo, diga **"fiz X -> proximo: `/neural-seam:ns-..."`**. Se qualquer tool
+   retornar `error` (rede/auth), pare e oriente `neural-seam login` ou `/neural-seam:ns-doctor`.

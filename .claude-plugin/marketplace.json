@@ -10,7 +10,7 @@
       "name": "neural-seam",
       "source": "./",
       "description": "Adapter de host Claude Code do Neural Seam (MCP neural-seam-runtime + hooks de lifecycle + comandos /neural-seam:ns-*).",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Neural Seam"
       }

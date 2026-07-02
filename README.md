@@ -8,7 +8,7 @@ Adapter de host **Claude Code** do Neural Seam, entregue como um **plugin** de C
 | ---------- | ------- | ------ |
 | Registro MCP **global** | `.mcp.json` | Servidor `neural-seam-runtime` via `neural-seam serve --project-from-cwd`. Como o servidor resolve o projeto pelo cwd, **um** registro atende todos os projetos. |
 | Hooks de lifecycle | `hooks/hooks.json` | `SessionStart` / `PreToolUse` / `Stop` invocam `neural-seam hook <event>`. |
-| Comandos | `commands/ns-*.md` | `/neural-seam:ns-check`, `/neural-seam:ns-doctor`, `/neural-seam:ns-sync`, `/neural-seam:ns-start`. |
+| Comandos | `commands/ns-*.md` | Onboarding: `/neural-seam:ns-status`, `ns-start`, `ns-create`, `ns-connect`, `ns-clone`, `ns-doctor`. Loop de trabalho: `ns-generate`, `ns-list`, `ns-open`, `ns-exec`, `ns-help`. Modelo: maquina de estados (`ns-start`/`ns-status`) + atomicas convergentes. Ver `commands/ns-help.md` e o ADR `adr-superficie-comandos-plugin-claude`. |
 
 ## Pre-requisitos (fora do escopo do plugin)
 
