@@ -21,6 +21,12 @@ Siga o runbook `docs/flows/e2e-insumo-generation.md`.
      e pare.
 3. Quando o dev confirmar, gere os insumos: a spec do projeto, os docs de discovery (glossario,
    historias de usuario, modelo de dominio) e o backlog.
+   - **Projeto brownfield** (o diretorio ja tinha codigo antes de ser conectado ao Neural Seam):
+     quando isso e o caso, o `prompt` retornado por `next_job` ja vem com uma secao adicional
+     "Brownfield project detected" instruindo a rodar `analyze_existing_project` primeiro. Siga
+     essa instrucao: leia o codigo real antes de escrever a spec, e limite o backlog aos gaps
+     reais entre a entrevista e o que ja esta implementado — nao proponha cards para o que ja
+     existe. Sem essa secao no prompt, o projeto e greenfield e a entrevista basta.
 4. Persista com `mcp__neural-seam-runtime__save_insumos`, passando `spec`, `glossary`, `user_stories`,
    `domain_model`, `backlog`. Confira o JSON de retorno (artifacts no backend + copias em disco).
 5. Para cada item do backlog, chame `mcp__neural-seam-runtime__create_activity` com `kind` (TECH,
