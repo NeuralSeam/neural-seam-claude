@@ -1,0 +1,10 @@
+# Serena MCP local tooling state (project.yml, cache, memories). Local, never source.
+# Convention shared with the other repositories in this project: ignore the whole folder, so
+# activating a project never dirties this tree.
+.serena/
+
+# Editor and OS noise. Nothing in this repository is generated or built.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

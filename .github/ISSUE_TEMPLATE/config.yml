@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Account, plan, project or data question
+    url: https://app.neuralseam.cloud
+    about: Anything about your Neural Seam account is handled in the product, not here.
+  - name: Security vulnerability
+    url: https://github.com/NeuralSeam/neural-seam-claude/security/advisories/new
+    about: Report it privately. Please do not open a public issue.
+  - name: A problem in the neural-seam runtime, the backend or the web app
+    url: https://app.neuralseam.cloud
+    about: This repository is only the Claude Code plugin.

@@ -1,0 +1,70 @@
+name: CI
+
+# The content this plugin ships is markdown and JSON. Nothing compiles it and no suite executes it,
+# so without these checks the first thing to find a broken file would be Claude Code, on a
+# developer's machine, in silence.
+#
+# Deliberately not here: anything that needs Claude Code itself. Exercising a command needs a
+# signed-in CLI, which a public runner does not have. Those steps are mandatory before tagging
+# instead, and CONTRIBUTING.md ("Before a release") is the procedure.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A newer push makes an in-flight run pointless. Cancel it rather than pay for it.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Read-only. Nothing in this workflow writes to the repository or posts anywhere.
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    # This name is what the branch ruleset requires. Renaming it silently un-protects the branch.
+    name: Plugin checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Actions are pinned by commit, not by tag: a tag can be moved to point at different code.
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+
+      # Manifest fields (mirroring the host's own validator), version agreement across both
+      # manifests and the changelog, command frontmatter and invocation control, the MCP
+      # registration and hook commands the runtime recognises, hardcoded addresses, card lookups
+      # by title, credentials, links and anchors, encoding, required files.
+      - name: Static checks
+        run: node scripts/check-bundle.mjs
+
+      # Proves each of those rules still fails when the thing it guards is broken. A gate nobody
+      # has seen fail is a gate nobody knows works.
+      - name: Mutation proofs for the checks
+        run: node scripts/check-bundle.test.mjs
+
+      # The checks above read the working tree. History is what a visitor can also read, and a
+      # credential removed by a later commit is still published. Only runs on pull requests,
+      # where there is a base to diff against.
+      - name: Scan the commits in this pull request
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          pattern='(ghp|gho|ghs|ghu|ghr)_[A-Za-z0-9]{16,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[baprs]-[A-Za-z0-9-]{10,}|BEGIN [A-Z ]*PRIVATE KEY'
+          # Report the file and line, never the matched text: echoing a secret into a public log
+          # is the thing this step exists to prevent.
+          if git diff "$BASE" "$HEAD" -- . | grep -nE "^\+.*($pattern)" > /dev/null; then
+            echo "::error::An added line looks like a credential. This repository is public."
+            exit 1
+          fi
+          echo "No credentials in the added lines."

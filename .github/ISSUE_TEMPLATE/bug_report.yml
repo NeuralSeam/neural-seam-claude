@@ -1,0 +1,56 @@
+name: Bug report
+description: Something in this plugin is wrong, broken or out of date.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is the **Claude Code plugin** only. Problems with your account, the
+        `neural-seam` runtime, the backend or the web app go to <https://app.neuralseam.cloud>.
+        Security problems go to [SECURITY.md](../blob/main/SECURITY.md), never a public issue.
+
+        Issues here are public: please do not paste tokens, private project identifiers, or code you
+        cannot share.
+
+  - type: checkboxes
+    id: triage
+    attributes:
+      label: Before opening
+      description: These five resolve most reports, and checking them saves a round trip.
+      options:
+        - label: "`/plugin` shows `neural-seam` as installed and enabled."
+        - label: I ran `/reload-plugins` (or restarted Claude Code) after installing or enabling it.
+        - label: "`neural-seam version` answers."
+        - label: "`/mcp` shows `neural-seam-runtime`."
+        - label: I ran `/neural-seam:ns-doctor` and it did not fix it.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran, what happened, and what you expected instead.
+      placeholder: |
+        I typed /neural-seam:ns-list and ...
+    validations:
+      required: true
+
+  - type: input
+    id: command
+    attributes:
+      label: Which command
+      description: The exact text you typed, including the `/neural-seam:` namespace.
+      placeholder: "/neural-seam:ns-exec abc123"
+
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      description: "Output of `claude --version` and `neural-seam version`, plus this plugin's version and your operating system. COMPATIBILITY.md lists what has been tested."
+      render: text
+      placeholder: |
+        claude --version    ->
+        neural-seam version ->
+        plugin version      ->
+        OS                  ->
+    validations:
+      required: true

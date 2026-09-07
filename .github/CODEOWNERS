@@ -1,0 +1,11 @@
+# Every change to this plugin is reviewed by a maintainer.
+# See CONTRIBUTING.md for what belongs here and what does not.
+
+*   @caiopc
+
+# These four files are what the neural-seam runtime looks for to recognise the setup it manages.
+# A change to any of them may need a matching runtime change before it can be merged.
+/.claude-plugin/plugin.json        @caiopc
+/.claude-plugin/marketplace.json   @caiopc
+/.mcp.json                         @caiopc
+/hooks/hooks.json                  @caiopc

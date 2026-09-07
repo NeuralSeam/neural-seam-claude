@@ -1,0 +1,4 @@
+# The CI workflow embeds a shell script. On a runner, CRLF line endings there fail with
+# `$'\r': command not found`, and the failure looks nothing like its cause. Pin the endings in the
+# repository so a contributor's local git config cannot decide it.
+* text=auto eol=lf

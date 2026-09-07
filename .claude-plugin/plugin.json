@@ -1,0 +1,22 @@
+{
+  "name": "neural-seam",
+  "version": "0.5.2",
+  "description": "Connects Claude Code to Neural Seam. Your project's spec, backlog, cards and per-path conventions are served to the agent over MCP, and eleven /neural-seam:ns-* commands walk you from sign in to implementing a card. Needs the `neural-seam` binary on your PATH.",
+  "author": {
+    "name": "Neural Seam",
+    "url": "https://neuralseam.cloud"
+  },
+  "homepage": "https://neuralseam.cloud",
+  "repository": "https://github.com/NeuralSeam/neural-seam-claude",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "mcp",
+    "developer-tools",
+    "ai-coding",
+    "software-engineering",
+    "neural-seam"
+  ],
+  "commands": "./commands",
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,36 @@
+name: Feature request
+description: Suggest something for this plugin.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This plugin is deliberately thin: it presents what the `neural-seam` runtime returns and holds
+        no product logic of its own. A rule that every host would need belongs in the runtime, not
+        here. [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) has the full boundary.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do
+      description: The problem, not the solution. What were you doing when you wanted this?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you have in mind
+      description: Optional. If you already have a shape for it, describe it here.
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Where do you think this belongs
+      description: A guess is fine; we will say if it lands elsewhere.
+      options:
+        - This plugin (something specific to Claude Code)
+        - The neural-seam runtime or the backend (a product rule)
+        - Not sure
+    validations:
+      required: true

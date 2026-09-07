@@ -1,0 +1,29 @@
+{
+  "name": "neural-seam",
+  "description": "Neural Seam integrations for Claude Code.",
+  "owner": {
+    "name": "Neural Seam",
+    "url": "https://neuralseam.cloud"
+  },
+  "plugins": [
+    {
+      "name": "neural-seam",
+      "source": "./",
+      "version": "0.5.2",
+      "description": "Connects Claude Code to Neural Seam: your project's spec, backlog, cards and per-path conventions over MCP, plus the /neural-seam:ns-* commands.",
+      "author": {
+        "name": "Neural Seam"
+      },
+      "homepage": "https://neuralseam.cloud",
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": [
+        "claude-code",
+        "mcp",
+        "developer-tools",
+        "ai-coding",
+        "software-engineering"
+      ]
+    }
+  ]
+}
