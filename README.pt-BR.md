@@ -14,8 +14,8 @@ do login até a implementação de um card.
 > nunca se autentica em um provedor de modelo no seu lugar.
 
 **Este repositório é só a integração com o Claude Code, e é licenciado sob MIT.** O runtime
-`neural-seam` é um produto comercial separado, com licença própria, distribuído como binários e
-instaladores assinados pelo
+`neural-seam` é um produto comercial separado, sob [licença própria](https://github.com/NeuralSeam/neural-seam-releases/blob/main/LICENSE.md), distribuído
+como binários e instaladores pelo
 [neural-seam-releases](https://github.com/NeuralSeam/neural-seam-releases#readme). O plugin precisa
 desse binário no seu `PATH`; ele não o contém, não o instala e não o substitui.
 
@@ -160,8 +160,9 @@ locais dele continuam lá até você removê-los. Veja [PRIVACY.md](./PRIVACY.md
 registro MCP e três declarações de hook. Não há telemetria nele, nem credencial, nem endpoint de rede
 próprio.
 
-O runtime `neural-seam` é um produto separado e move dados, sob a documentação dele.
-[PRIVACY.md](./PRIVACY.md) explica a fronteira entre os dois.
+O runtime `neural-seam` é um produto separado e move dados, sob
+[a documentação de privacidade dele](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md). O [PRIVACY.md](./PRIVACY.md) deste
+repositório explica a fronteira entre os dois.
 
 ## Solução de problemas
 
@@ -182,7 +183,8 @@ O runtime `neural-seam` é um produto separado e move dados, sob a documentaçã
 - Vulnerabilidade: [SECURITY.md](./SECURITY.md) - não abra issue pública
 - Dados: [PRIVACY.md](./PRIVACY.md)
 - Versões testadas: [COMPATIBILITY.md](./COMPATIBILITY.md)
-- Conta, plano, projeto ou o runtime em si: <https://app.neuralseam.cloud>
+- Runtime: [manual](https://github.com/NeuralSeam/neural-seam-releases/blob/main/USER-MANUAL.md) · [privacidade](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md) · [suporte](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SUPPORT.md)
+- Conta, plano ou projeto: <https://app.neuralseam.cloud>
 
 ## Licença
 

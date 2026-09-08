@@ -11,14 +11,15 @@ that take you from signing in to implementing a card.
 > provides it. Neural Seam never authenticates to a model provider on your behalf.
 
 **This repository is the Claude Code integration only, and it is MIT licensed.** The `neural-seam`
-runtime is a separate commercial product with its own licence, distributed as signed binaries and
-installers from [neural-seam-releases](https://github.com/NeuralSeam/neural-seam-releases#readme).
-The plugin needs that binary on your `PATH`; it does not contain it, install it, or replace it.
+runtime is a separate commercial product under [its own licence](https://github.com/NeuralSeam/neural-seam-releases/blob/main/LICENSE.md), distributed as
+binaries and installers from
+[neural-seam-releases](https://github.com/NeuralSeam/neural-seam-releases#readme). The plugin needs
+that binary on your `PATH`; it does not contain it, install it, or replace it.
 
 - **Product:** <https://neuralseam.cloud>
 - **App:** <https://app.neuralseam.cloud>
-- **Runtime download, install and user manual:**
-  [neural-seam-releases](https://github.com/NeuralSeam/neural-seam-releases#readme)
+- **Runtime:** [download and install](https://github.com/NeuralSeam/neural-seam-releases#readme) ·
+  [user manual](https://github.com/NeuralSeam/neural-seam-releases/blob/main/USER-MANUAL.md) · [privacy](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md) · [licence](https://github.com/NeuralSeam/neural-seam-releases/blob/main/LICENSE.md)
 - **Portuguese:** [README.pt-BR.md](./README.pt-BR.md) (short guide; this file is canonical)
 
 ## What it does
@@ -174,9 +175,10 @@ local files stay until you remove them. See [PRIVACY.md](./PRIVACY.md).
 manifest, an MCP registration and three hook declarations. There is no telemetry in it, no
 credential, and no network endpoint of its own.
 
-The `neural-seam` runtime is a separate product and does move data, under its own documentation. See
-[PRIVACY.md](./PRIVACY.md) for the boundary between the two, and [SECURITY.md](./SECURITY.md) for
-what the hooks do and how to report a vulnerability.
+The `neural-seam` runtime is a separate product and does move data, under
+[its own privacy documentation](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md). See [PRIVACY.md](./PRIVACY.md) for the boundary
+between the two, and [SECURITY.md](./SECURITY.md) for what the hooks do and how to report a
+vulnerability.
 
 ## Troubleshooting
 

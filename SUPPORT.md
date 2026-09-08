@@ -19,7 +19,7 @@ README](./README.md#troubleshooting) covers them, and this order resolves them f
 | An idea for this plugin | [Open an issue](https://github.com/NeuralSeam/neural-seam-claude/issues) using the feature request template |
 | A security vulnerability | [SECURITY.md](./SECURITY.md). **Not** a public issue |
 | A question about your account, plan, projects or data | The support form at <https://app.neuralseam.cloud> |
-| A problem in the `neural-seam` runtime, the backend or the web app | The support form at <https://app.neuralseam.cloud> |
+| A problem in the `neural-seam` runtime, the backend or the web app | [The runtime's support page](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SUPPORT.md) |
 | A problem in Claude Code itself | Anthropic's own channels |
 
 Issues on this repository are read by the maintainers of the plugin. They are not an account support
