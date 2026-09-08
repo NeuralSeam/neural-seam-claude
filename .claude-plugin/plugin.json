@@ -1,6 +1,6 @@
 {
   "name": "neural-seam",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Connects Claude Code to Neural Seam. Your project's spec, backlog, cards and per-path conventions are served to the agent over MCP, and eleven /neural-seam:ns-* commands walk you from sign in to implementing a card. Needs the `neural-seam` binary on your PATH.",
   "author": {
     "name": "Neural Seam",

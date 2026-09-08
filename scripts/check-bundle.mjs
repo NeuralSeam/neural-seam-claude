@@ -84,10 +84,9 @@ const YAML_BOOLEAN = /^(true|false)$/;
 const MOJIBAKE = new RegExp(String.fromCharCode(0xFFFD) + "|" + String.fromCharCode(0xC3)
   + "[" + String.fromCharCode(0x80) + "-" + String.fromCharCode(0xBF) + "]");
 
-// The runtime recognises the setup it manages by these values. They are a contract shared with
-// its Claude Code adapter: change one side without the other and a project is either wired twice
-// or cleaned up wrongly. Asserting them here means a rename cannot land as a silent edit to a
-// JSON file.
+// These values are shared with the runtime, which has to recognise the setup this plugin installs.
+// Asserting them here means a rename cannot land as a silent edit to a JSON file and reach users
+// before anyone notices.
 const MCP_SERVER_NAME = "neural-seam-runtime";
 const MCP_SERVER_ARGS = ["serve", "--project-from-cwd"];
 const HOOK_EVENTS = { SessionStart: "session-start", PreToolUse: "pre-tool-use", Stop: "stop" };
@@ -371,9 +370,16 @@ for (const file of textFiles) {
     if (/(titulo exato|exact title|title is exactly)|card (de titulo|titled|whose title)\s*[:"]|(search|busque|procure|look up)[^.]{0,40}\btitle\b[^.]{0,20}"/i.test(line)) {
       fail(at, "looks like a card lookup by literal title; use the identifier the runtime returns");
     }
-    // A command surface belonging to a different agent CLI. These arrive by copying a file from
-    // a sibling integration, and they are wrong here whatever they say.
-    if (/\bagy plugin\b|\bcodex plugin\b|\bcodex mcp\b|\$neural-seam:ns-/.test(line)) fail(at, "names another agent CLI's command surface");
+    // This repository documents one host's command surface. Two things silently differ between
+    // agent CLIs and are easy to carry over by copying a file: the sigil a command is invoked
+    // with, and the verb that installs a plugin. Both rules are shape-based rather than a list of
+    // product names, so a CLI nobody here has heard of is caught the same way.
+    if (/(?<![/\w])[^\s/\w]neural-seam:ns-/.test(line)) {
+      fail(at, "invokes a command with a sigil this host does not use; Claude Code invokes plugin commands as `/<plugin>:<command>`");
+    }
+    if (/\b(?!claude\b)[a-z][a-z0-9-]*\s+plugin\s+(install|marketplace|uninstall)\b/.test(line)) {
+      fail(at, "gives a plugin install instruction for a CLI other than `claude`; this repository documents Claude Code only");
+    }
     if (/(ghp|gho|ghs|ghu|ghr)_[A-Za-z0-9]{16,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[baprs]-[A-Za-z0-9-]{10,}|BEGIN [A-Z ]*PRIVATE KEY/.test(line)) {
       fail(at, "looks like a credential; this repository is public");
     }
