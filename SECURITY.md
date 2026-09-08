@@ -39,8 +39,9 @@ owns is the wiring itself.
 - Anything in this repository or its history that should not be public.
 
 **Out of scope here, but still wanted:** vulnerabilities in the `neural-seam` runtime, the Neural
-Seam backend, or the web applications. Those are separate products; report them through the same
-private channel and they will be routed. Vulnerabilities in Claude Code itself belong to Anthropic.
+Seam backend, or the web applications. Those are separate products with their own
+[security policy](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SECURITY.md). A report sent here will be routed rather than dropped.
+Vulnerabilities in Claude Code itself belong to Anthropic.
 
 ## What the hooks do
 
@@ -54,8 +55,9 @@ own**.
 | `PreToolUse` | `neural-seam hook pre-tool-use` | Can decline a tool call that would write while a read-only review is in progress. It does not modify your files. |
 | `Stop` | `neural-seam hook stop` | Records session state locally. Time-bounded, and does not delay shutdown. |
 
-None of them is a telemetry hook. What the runtime does with what it records is covered by the
-runtime's own documentation; see [PRIVACY.md](./PRIVACY.md) for the boundary.
+None of them is a telemetry hook. What the runtime does with what it records is covered by
+[the runtime's privacy documentation](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md); see [PRIVACY.md](./PRIVACY.md) for the
+boundary between the two.
 
 ## What this plugin can and cannot do
 

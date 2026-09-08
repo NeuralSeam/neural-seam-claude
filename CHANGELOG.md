@@ -6,11 +6,20 @@ Notable changes to the Neural Seam plugin for Claude Code. Format based on
 Entries are newest first and record what you can notice when you install or update: new behaviour,
 fixes, security changes, compatibility changes, and anything you have to do by hand.
 
-## [0.5.3] - Unreleased
+## [0.5.3] - 2026-09-08
 
 Documentation only. No change to the commands, the MCP registration or the hooks.
 
 ### Changed
+
+- **The runtime's own documentation is now linked directly**, rather than described here. Privacy,
+  security, support, the user manual and the licence for the `neural-seam` runtime live with the
+  runtime: [privacy](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md), [security](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SECURITY.md), [support](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SUPPORT.md),
+  [user manual](https://github.com/NeuralSeam/neural-seam-releases/blob/main/USER-MANUAL.md), [licence](https://github.com/NeuralSeam/neural-seam-releases/blob/main/LICENSE.md).
+- **[COMPATIBILITY.md](./COMPATIBILITY.md) now records a published runtime.** Plugin 0.5.3 was tested
+  against Claude Code 2.1.263 and `neural-seam` 0.16.1 on Windows 11, using the published binary
+  checked against the release's own checksums. The previous warning about testing against a
+  development build is gone because it no longer applies.
 
 - **The documentation now states plainly that the `neural-seam` runtime is a separate commercial
   product**, distributed as signed binaries from its own repository, and that the MIT licence here

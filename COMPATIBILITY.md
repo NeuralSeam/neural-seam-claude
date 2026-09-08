@@ -11,21 +11,22 @@ guarantee we have not earned.
 
 | Plugin | Claude Code | `neural-seam` runtime | Operating system | Tested on |
 | --- | --- | --- | --- | --- |
-| 0.5.3 | 2.1.263 | not revalidated | Windows 11 | 2026-09-08 |
+| 0.5.3 | 2.1.263 | 0.16.1 (published release) | Windows 11 | 2026-09-08 |
 | 0.5.2 | 2.1.263 | 0.11.0 (development build) | Windows 11 | 2026-09-07 |
 
-> [!IMPORTANT]
-> **No row above records a published runtime.** The runtime available when these checks ran was a
-> development build, and the plugin has not been revalidated against a published release since.
->
-> What was exercised is the part the plugin owns: the MCP server starts under
-> `neural-seam serve --project-from-cwd`, the hook commands resolve, and the plugin installs and
-> loads. What was **not** exercised is the end-to-end behaviour of the commands against a published
-> runtime.
->
-> **Before the next release, this must be run against a published runtime and this note replaced with
-> the version used.** The procedure is in
-> [CONTRIBUTING.md](./CONTRIBUTING.md#before-a-release).
+The 0.5.3 row was measured against the published runtime binary from
+[neural-seam-releases](https://github.com/NeuralSeam/neural-seam-releases/releases/tag/v0.16.1),
+verified against the `checksums.txt` published with it.
+
+**What that row covers:** installing from this marketplace into a clean configuration, the plugin
+loading and reporting no errors, the 11 commands present, the `neural-seam-runtime` MCP server
+registered and starting under `neural-seam serve --project-from-cwd`, all three lifecycle hooks
+running and exiting cleanly, the invocation guards present in the installed copy, and a full
+update and uninstall cycle.
+
+**What it does not cover:** anything that needs a signed-in account, which a public check cannot do.
+Signing in, binding a project, and the command flows that follow are exercised by hand before a
+release; see [CONTRIBUTING.md](./CONTRIBUTING.md#before-a-release).
 
 ### How to read the columns
 

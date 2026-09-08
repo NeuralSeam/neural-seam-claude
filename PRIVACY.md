@@ -31,8 +31,13 @@ that actually moves data: it signs you in, talks to the Neural Seam backend, and
 your machine.
 
 **How the runtime processes, stores and transmits data, where it keeps credentials, and how to delete
-what it has stored, are governed by the runtime's own documentation**, published with it. Start from
-its [user manual](https://github.com/NeuralSeam/neural-seam-releases/blob/main/USER-MANUAL.md).
+what it has stored, are governed by the runtime's own documentation**, published with it:
+
+- [Privacy](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md)
+- [Security](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SECURITY.md)
+- [Support](https://github.com/NeuralSeam/neural-seam-releases/blob/main/SUPPORT.md)
+- [User manual](https://github.com/NeuralSeam/neural-seam-releases/blob/main/USER-MANUAL.md)
+- [Licence](https://github.com/NeuralSeam/neural-seam-releases/blob/main/LICENSE.md)
 
 Two points are worth stating here anyway, because people reasonably ask them of an integration:
 
@@ -54,7 +59,7 @@ that path and cannot see it.
 | What | How |
 | --- | --- |
 | The plugin | `/plugin uninstall neural-seam@neural-seam` in Claude Code. Removes the commands, hooks and MCP registration. |
-| Anything the runtime stored on your machine, including credentials | Follow the runtime's own documentation. Uninstalling the plugin does not touch it. |
+| Anything the runtime stored on your machine, including credentials | Follow [the runtime's privacy documentation](https://github.com/NeuralSeam/neural-seam-releases/blob/main/PRIVACY.md). Uninstalling the plugin does not touch it. |
 | Your account and the project data held by the service | Not on your machine. Use the support form at <https://app.neuralseam.cloud>. |
 
 ## Changes
