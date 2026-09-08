@@ -54,7 +54,10 @@ function runChecker(dir) {
 }
 
 const cases = [];
+/** A mutation the checker must REJECT, with the message that says why. */
 const mutation = (name, expect, mutate) => cases.push({ name, expect, mutate });
+/** A change the checker must ACCEPT. Guards against a rule that fires on legitimate content. */
+const accepts = (name, mutate) => cases.push({ name, expect: null, mutate });
 
 // ---------------------------------------------------------------- invocation control
 
@@ -194,9 +197,29 @@ mutation(
 );
 
 mutation(
-  "a command surface belonging to a different agent CLI is copied in",
-  "another agent CLI's command surface",
-  dir => edit(dir, "commands/ns-help.md", t => `${t}\n\nOn that other CLI, run codex plugin install instead.\n`),
+  "an install verb belonging to a different CLI is copied in",
+  "plugin install instruction for a CLI other than",
+  dir => edit(dir, "commands/ns-help.md", t => `${t}\n\nOn that other CLI, run somecli plugin install instead.\n`),
+);
+
+mutation(
+  "a command is written with a sigil this host does not use",
+  "sigil this host does not use",
+  dir => edit(dir, "commands/ns-help.md", t => `${t}\n\nInvoke it as $neural-seam:ns-status there.\n`),
+);
+
+// Cases that must leave the checker PASSING. A rule that fires on legitimate content is as broken
+// as one that never fires, and only these cases can catch that.
+accepts(
+  "the host's own install and invocation forms",
+  dir => edit(dir, "commands/ns-help.md", t =>
+    `${t}\n\nRun claude plugin install neural-seam@neural-seam, then type /neural-seam:ns-status.\n`),
+);
+
+accepts(
+  "prose that forbids a practice without performing it",
+  dir => edit(dir, "CONTRIBUTING.md", t =>
+    `${t}\n\nNever look a card up by its title, and never write a fixed port into a command.\n`),
 );
 
 mutation(
@@ -265,18 +288,27 @@ const failures = [];
 
 for (const { name, expect, mutate } of cases) {
   const dir = copyRepo();
+  const kind = expect === null ? "accepts" : "rejects";
   try {
     mutate(dir);
     const { code, out } = runChecker(dir);
-    if (code === 0) {
+    if (expect === null) {
+      if (code === 0) {
+        passed++;
+        console.log(`  ok   ${kind}: ${name}`);
+      } else {
+        failures.push(`${name}: the checker REJECTED content it should accept:\n${out}`);
+        console.log(`  FAIL ${kind}: ${name}`);
+      }
+    } else if (code === 0) {
       failures.push(`${name}: the checker PASSED a tree it should have rejected (expected ${JSON.stringify(expect)})`);
-      console.log(`  FAIL ${name}`);
+      console.log(`  FAIL ${kind}: ${name}`);
     } else if (!out.includes(expect)) {
       failures.push(`${name}: rejected, but not for the stated reason.\n    expected to find: ${JSON.stringify(expect)}\n    got:\n${out}`);
-      console.log(`  FAIL ${name}`);
+      console.log(`  FAIL ${kind}: ${name}`);
     } else {
       passed++;
-      console.log(`  ok   ${name}`);
+      console.log(`  ok   ${kind}: ${name}`);
     }
   } catch (e) {
     failures.push(`${name}: the mutation itself failed to apply: ${e.message}`);

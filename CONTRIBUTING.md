@@ -5,11 +5,15 @@ read what it is before proposing a change.
 
 ## What this repository is
 
-A **host adapter**, shipped as a Claude Code plugin. The repository root is both the plugin and the
-marketplace that publishes it: `.claude-plugin/plugin.json` is the plugin manifest and
-`.claude-plugin/marketplace.json` is the catalog entry, with `source: "./"` pointing back at the same
-directory. That is what makes `/plugin marketplace add NeuralSeam/neural-seam-claude` followed by
-`/plugin install neural-seam@neural-seam` work from this repository alone.
+The **Claude Code integration** for Neural Seam, shipped as a Claude Code plugin. The repository root
+is both the plugin and the marketplace that publishes it: `.claude-plugin/plugin.json` is the plugin
+manifest and `.claude-plugin/marketplace.json` is the catalog entry, with `source: "./"` pointing
+back at the same directory. That is what makes `/plugin marketplace add NeuralSeam/neural-seam-claude`
+followed by `/plugin install neural-seam@neural-seam` work from this repository alone.
+
+The `neural-seam` runtime is a **separate commercial product** with its own repository, licence and
+release process. It is not developed here, and this repository is MIT because it is the integration
+layer, not the product.
 
 **What the plugin ships** is content only: markdown and JSON, and none of it compiles. **The
 repository around it** also holds the checks that gate that content (`scripts/`, JavaScript) and the
@@ -20,9 +24,9 @@ Claude Code, on a developer's machine, usually in silence. That is why `scripts/
 exists, why `scripts/check-bundle.test.mjs` proves each of its rules by mutation, and why CI runs both
 on every pull request.
 
-It is also deliberately **thin**. Product logic lives in the `neural-seam` runtime and the backend, not
-here. A change that teaches this plugin a rule the runtime should own will be declined, however well it
-is written, because the same rule would then have to be re-implemented for every other host.
+It is also deliberately **thin**. Product logic lives in the runtime, not here. A change that teaches
+this plugin a rule the runtime should own will be declined, however well it is written, because the
+same rule would then have to be re-implemented for every other integration.
 
 ## What belongs here, and what does not
 
@@ -110,26 +114,21 @@ is written, because the same rule would then have to be re-implemented for every
 
 ## Review
 
-Maintainers are listed in [.github/CODEOWNERS](./.github/CODEOWNERS). This plugin is kept in lockstep
-with the `neural-seam` runtime's Claude Code host adapter, so a change to its wiring may need a matching
-runtime change before it can be merged. If that applies to your pull request, we will say so on the
-pull request rather than leaving it open without explanation.
+Maintainers are listed in [.github/CODEOWNERS](./.github/CODEOWNERS).
 
-The wiring in question is the identity the runtime uses to recognise what it manages: the plugin name,
-the marketplace name, the MCP server key and its arguments, and the hook commands and their timeout.
-Change one side without the other and the runtime either wires a project twice or cleans up the wrong
-thing.
+A handful of values in this repository are shared with the runtime, which has to recognise the setup
+this plugin installs: the plugin name, the marketplace name, the MCP server key and its arguments,
+and the hook commands. Changing any of them may need a coordinated runtime release before it can be
+merged. If that applies to your pull request, we will say so on it rather than leaving it open
+without explanation.
 
-## How this plugin relates to the runtime
+## What belongs to the runtime, not here
 
-Useful when judging whether a change belongs here at all.
+Useful when judging whether a change belongs in this repository at all.
 
-- **The plugin wires the host.** The format carries an MCP registration, lifecycle hooks and commands,
-  so the plugin carries all three, and with it installed the runtime stops writing them per project.
-- **The plugin carries no product state.** Signing in, the signed manifest and the project binding stay
-  with the runtime, because they belong to a project rather than to a host.
-
-So installing the plugin does **not** replace `neural-seam connect`.
+- **This plugin adds the integration:** an MCP registration, lifecycle hooks and commands.
+- **It carries no product state.** Signing in and binding a project belong to the runtime, so
+  installing the plugin does not replace them.
 
 ## Before a release
 
@@ -178,10 +177,10 @@ Then, in a session with the plugin loaded:
    from its frontmatter.
 2. **The MCP server is wired by the plugin.** `/mcp` shows `neural-seam-runtime` and it answers.
 3. **The hooks fire.** A session start prints the runtime's status line.
-4. **The runtime contract the commands rely on.** The commands present the state and message that
-   `check_setup` returns and the prompts that `next_job` and `exec_activity` return. Confirm against
-   the **published** runtime, not a development build, and do not document a behaviour that only a
-   development build has.
+4. **The behaviour the commands rely on.** The commands present what the runtime returns. Confirm
+   against a **published** runtime release, not a development build, and do not document a behaviour
+   that only a development build has. Record the versions in
+   [COMPATIBILITY.md](./COMPATIBILITY.md).
 5. **A command that changes something is not invoked on its own.** Every command that writes, clones,
    repairs or generates carries `disable-model-invocation: true`, so it runs when the developer types
    it and not when a model decides it is relevant. `scripts/check-bundle.mjs` fails if one loses the

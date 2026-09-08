@@ -1,18 +1,23 @@
 # Neural Seam para o Claude Code
 
-Guia em português brasileiro. A documentação canônica é o [README.md](./README.md), em inglês, e é ele
-que é atualizado primeiro. Este guia é mais curto, mas é completo o suficiente para você instalar,
-conferir, atualizar e remover o plugin sem precisar do texto em inglês.
+Guia em português brasileiro. A documentação canônica é o [README.md](./README.md), em inglês, e é
+ele que é atualizado primeiro. Este guia é mais curto, mas é completo o suficiente para você
+instalar, conferir, atualizar e remover o plugin sem precisar do texto em inglês.
 
-O plugin oficial do **Neural Seam** para o **Claude Code**. Instalar registra o servidor MCP
-`neural-seam-runtime`, ativa três hooks de ciclo de vida e adiciona os 11 comandos
-`/neural-seam:ns-*`. Tudo o que ele configura aponta para o binário `neural-seam` no seu `PATH`.
+O plugin oficial do **Neural Seam** para o **Claude Code**. Ele conecta o Claude Code ao Neural Seam
+para que a especificação, o backlog, os cards e as convenções por caminho do seu projeto fiquem
+disponíveis para o agente enquanto você trabalha, e adiciona 11 comandos `/neural-seam:ns-*` que vão
+do login até a implementação de um card.
 
-> **O Neural Seam não fornece modelo e não roda inferência.** Ele coordena o trabalho: a especificação,
-> o glossário, o backlog, os cards e as convenções por caminho do seu projeto vivem no Neural Seam e
-> são entregues ao seu agente por MCP. O modelo com quem você conversa é o que o seu Claude Code já
-> usa, cobrado por quem o fornece. O Neural Seam nunca se autentica em um provedor de modelo no seu
-> lugar.
+> **O Neural Seam não fornece modelo e não roda inferência.** Ele coordena o trabalho. O modelo com
+> quem você conversa é o que o seu Claude Code já usa, cobrado por quem o fornece. O Neural Seam
+> nunca se autentica em um provedor de modelo no seu lugar.
+
+**Este repositório é só a integração com o Claude Code, e é licenciado sob MIT.** O runtime
+`neural-seam` é um produto comercial separado, com licença própria, distribuído como binários e
+instaladores assinados pelo
+[neural-seam-releases](https://github.com/NeuralSeam/neural-seam-releases#readme). O plugin precisa
+desse binário no seu `PATH`; ele não o contém, não o instala e não o substitui.
 
 ## Pré-requisitos
 
@@ -20,8 +25,8 @@ O plugin oficial do **Neural Seam** para o **Claude Code**. Instalar registra o 
 | --- | --- | --- |
 | Claude Code | instalador da Anthropic | `claude --version` |
 | o binário `neural-seam` no `PATH` | [instalador do Neural Seam](https://github.com/NeuralSeam/neural-seam-releases#download-and-install) | `neural-seam version` |
-| conta Neural Seam, com login feito | `neural-seam login` (device flow) | `neural-seam doctor` |
-| projeto vinculado a esta pasta | `neural-seam connect <projectId>`, ou o painel local | `/neural-seam:ns-status` |
+| conta Neural Seam, com login feito | `neural-seam login` | `neural-seam doctor` |
+| projeto vinculado a esta pasta | a configuração do runtime, ou o painel local | `/neural-seam:ns-status` |
 
 As versões em que o plugin foi realmente testado estão em [COMPATIBILITY.md](./COMPATIBILITY.md).
 
@@ -36,8 +41,6 @@ São dois passos, nesta ordem. O verbo de instalação resolve o plugin contra o
 ```
 
 `neural-seam@neural-seam` quer dizer: o plugin `neural-seam`, publicado no marketplace `neural-seam`.
-É a mesma referência que o runtime mostra quando avisa que o plugin está faltando, então as duas nunca
-divergem.
 
 ### Deixando o plugin ativo
 
@@ -47,10 +50,8 @@ O resumo da instalação diz qual dos dois casos aconteceu:
 - **`Run /reload-plugins to activate.`** Rode esse comando. Se ele avisar que recarregar faria a
   conversa ser lida de novo, rode `/reload-plugins --force`.
 
-Reiniciar o Claude Code tem o mesmo efeito e é a saída quando o reload não resolve.
-
-Esse comportamento depende da sua versão do Claude Code: versões mais antigas nunca ativavam uma
-instalação na própria sessão em que ela foi feita. O detalhe está em
+Reiniciar o Claude Code tem o mesmo efeito e é a saída quando o reload não resolve. Isso depende da
+sua versão do Claude Code; o detalhe está em
 [COMPATIBILITY.md](./COMPATIBILITY.md#when-an-install-takes-effect).
 
 ### Conferindo a instalação
@@ -63,29 +64,6 @@ Com o Claude Code aberto na pasta de um projeto:
 3. `/neural-seam:ns-status` responde com o estado do projeto.
 
 Se o servidor MCP não aparecer, rode `/neural-seam:ns-doctor`.
-
-## Atualização
-
-```
-/plugin marketplace update
-/reload-plugins
-```
-
-Depois confira a versão em `/plugin`. O histórico de mudanças está em [CHANGELOG.md](./CHANGELOG.md).
-
-## Remoção
-
-```
-/plugin uninstall neural-seam@neural-seam
-```
-
-Isso remove os comandos, os hooks e o registro MCP de uma vez só. Para manter instalado mas desligar,
-use `/plugin disable neural-seam@neural-seam`. Nos dois casos, rode `/reload-plugins` para valer já na
-sessão atual.
-
-Desinstalar o plugin **não** apaga nada do que o runtime `neural-seam` gravou: suas credenciais, a
-pasta `~/.neural-seam/` e os arquivos por projeto continuam lá até você removê-los.
-[PRIVACY.md](./PRIVACY.md#deleting-your-data) lista cada lugar e como limpar.
 
 ## Primeiro uso
 
@@ -139,44 +117,51 @@ pior caso deles é uma chamada desperdiçada.
 É uma proteção contra surpresa, não uma fronteira de permissão: depois que você roda um deles, as
 ferramentas que ele usa passam pelas mesmas aprovações de sempre.
 
-## O que o plugin configura
+### O que instalar o plugin acrescenta
 
-| Componente | Arquivo | Efeito |
-| --- | --- | --- |
-| Registro MCP | `.mcp.json` | `neural-seam-runtime`, iniciado como `neural-seam serve --project-from-cwd`. O servidor resolve o projeto pelo diretório de trabalho, então **um** registro serve todos os projetos. |
-| Hooks de ciclo de vida | `hooks/hooks.json` | `SessionStart`, `PreToolUse` e `Stop` rodam `neural-seam hook <evento>`. O que cada um faz está em [SECURITY.md](./SECURITY.md#what-the-hooks-do). |
-| Comandos | `commands/ns-*.md` | Os 11 comandos da tabela acima. |
+Três coisas, e nada além disso:
 
-### Com o plugin instalado, o `neural-seam connect` grava menos
+- o servidor MCP `neural-seam-runtime`, para o agente poder consultar o Neural Seam sobre o seu
+  projeto;
+- os 11 comandos da tabela acima;
+- três hooks de ciclo de vida do Claude Code, que rodam o binário `neural-seam` na sua máquina.
 
-A mesma configuração pode vir de dois lugares: deste plugin, uma vez, para todos os projetos; ou do
-runtime, gravando dentro de cada projeto que ele conecta. Os dois gravando dariam dois registros MCP e
-dois hooks de sessão, então só um deles grava.
+Tudo aponta para o binário `neural-seam` do seu `PATH`. O que os hooks fazem está em
+[SECURITY.md](./SECURITY.md#what-the-hooks-do).
 
-| Situação | O que o `neural-seam connect` faz |
-| --- | --- |
-| Plugin instalado | Pula o registro MCP, os hooks e os comandos, e remove o que uma configuração por projeto anterior deixou para trás. Continua gravando os arquivos do seu projeto: o manifesto assinado, a memória de projeto e os stubs. |
-| Plugin ausente | Grava tudo dentro do projeto, e orienta você a instalar o plugin. |
+**Instalar o plugin não substitui `neural-seam login` nem a configuração do projeto**: autenticação e
+vínculo são estado de produto, e ficam com o runtime.
 
-Vale saber:
+## Atualização
 
-- **`neural-seam connect --host-wiring plugin|local|auto`** deixa você decidir em vez de depender da
-  detecção. `local` força os arquivos por projeto, que é o que você quer em uma máquina onde não dá
-  para instalar plugins; `plugin` força o modo enxuto.
-- **Na dúvida, o runtime grava os arquivos.** Uma detecção que falha te deixa com um projeto
-  funcionando, não com um projeto sem configuração.
-- **A limpeza só remove o que ela mesma gravou.** Seus hooks, seus servidores MCP e seus arquivos
-  ficam intactos.
+```
+/plugin marketplace update
+/reload-plugins
+```
 
-**Instalar o plugin não substitui `neural-seam login` nem `neural-seam connect`**: autenticação,
-manifesto assinado e vínculo do projeto são estado de produto, não de host.
+Depois confira a versão em `/plugin`. O histórico de mudanças está em [CHANGELOG.md](./CHANGELOG.md).
 
-### O que não vem nesta versão
+## Remoção
 
-Esta versão não inclui o aviso opcional de convenções por caminho, que aponta um arquivo-fonte recém
-criado para as convenções que valem naquele caminho. Esse comportamento hoje é gerenciado pelo runtime
-`neural-seam` projeto a projeto, então você o tem em um projeto que o runtime configurou diretamente.
-O resto (servidor MCP, hooks e comandos) funciona igual nos dois casos.
+```
+/plugin uninstall neural-seam@neural-seam
+```
+
+Isso remove os comandos, os hooks e o registro MCP de uma vez só. Para manter instalado mas desligar,
+use `/plugin disable neural-seam@neural-seam`. Nos dois casos, rode `/reload-plugins` para valer já
+na sessão atual.
+
+Desinstalar o plugin **não** apaga nada do que o runtime guardou: suas credenciais e os arquivos
+locais dele continuam lá até você removê-los. Veja [PRIVACY.md](./PRIVACY.md).
+
+## Privacidade e segurança
+
+**O plugin não coleta nem envia nada.** Ele é conteúdo e configuração: comandos, um manifesto, um
+registro MCP e três declarações de hook. Não há telemetria nele, nem credencial, nem endpoint de rede
+próprio.
+
+O runtime `neural-seam` é um produto separado e move dados, sob a documentação dele.
+[PRIVACY.md](./PRIVACY.md) explica a fronteira entre os dois.
 
 ## Solução de problemas
 
@@ -187,22 +172,9 @@ O resto (servidor MCP, hooks e comandos) funciona igual nos dois casos.
 | `/mcp` não mostra o `neural-seam-runtime` | O `neural-seam` não está no `PATH`, ou o plugin está desabilitado | `neural-seam version`; se falhar, reinstale o runtime |
 | `/plugin` acusa erro de carregamento | O plugin falhou ao carregar | Abra a aba **Errors** do `/plugin` e [abra uma issue](https://github.com/NeuralSeam/neural-seam-claude/issues) com o texto |
 | Nada acontece no início da sessão | O plugin carregou, mas o binário está faltando | `neural-seam version` |
-| `/neural-seam:ns-status` diz que você não está autenticado | Sessão expirada, ou substituída por um login mais novo | `neural-seam login` |
-| Vinculou o projeto e o manifesto foi parar na pasta errada | Você vinculou antes de reabrir a sessão dentro da subpasta clonada | Reabra a sessão na pasta clonada e vincule de novo |
-| Duas mensagens de sessão, ou o servidor listado duas vezes | O projeto ainda tem configuração por projeto de antes do plugin | Rode `neural-seam connect` de novo; ele remove o que gravou |
 | Os comandos aparecem mas estão desatualizados | A sessão ainda roda a versão que carregou na abertura | `/reload-plugins` |
-| Qualquer outra coisa | | `/neural-seam:ns-doctor` |
-
-## Privacidade e segurança
-
-**O plugin em si não coleta nem envia nada.** O que ele instala é Markdown e JSON, sem endpoint de
-rede, sem analytics e sem credencial.
-
-O runtime `neural-seam` para o qual ele aponta move dados, e nem tudo é opcional: o login, a
-identificação da sua máquina no login e os dados de coordenação do seu projeto são enviados havendo
-telemetria ou não. A telemetria em si é opt-in e vem desligada. Seu código-fonte é lido localmente.
-
-O quadro completo, incluindo como apagar cada base separadamente, está em [PRIVACY.md](./PRIVACY.md).
+| Sem login, ou projeto não vinculado | É estado do runtime, não do plugin | `/neural-seam:ns-doctor` |
+| Qualquer outra coisa | | `/neural-seam:ns-doctor` e depois o [manual do runtime](https://github.com/NeuralSeam/neural-seam-releases/blob/main/USER-MANUAL.md) |
 
 ## Onde pedir ajuda
 
@@ -210,9 +182,11 @@ O quadro completo, incluindo como apagar cada base separadamente, está em [PRIV
 - Vulnerabilidade: [SECURITY.md](./SECURITY.md) - não abra issue pública
 - Dados: [PRIVACY.md](./PRIVACY.md)
 - Versões testadas: [COMPATIBILITY.md](./COMPATIBILITY.md)
-- Conta, plano ou projeto: <https://app.neuralseam.cloud>
+- Conta, plano, projeto ou o runtime em si: <https://app.neuralseam.cloud>
 
 ## Licença
 
-MIT, veja [LICENSE](./LICENSE). A licença cobre o conteúdo deste repositório; ela não concede direitos
-sobre o nome nem sobre a marca Neural Seam, veja [TRADEMARKS.md](./TRADEMARKS.md).
+MIT, veja [LICENSE](./LICENSE). Ela cobre o conteúdo deste repositório, que é a integração com o
+Claude Code. Ela **não** cobre o runtime `neural-seam`, que é um produto comercial separado com
+licença própria, e não concede direitos sobre o nome nem sobre a marca Neural Seam, veja
+[TRADEMARKS.md](./TRADEMARKS.md).
