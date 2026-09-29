@@ -89,7 +89,13 @@ const MOJIBAKE = new RegExp(String.fromCharCode(0xFFFD) + "|" + String.fromCharC
 // before anyone notices.
 const MCP_SERVER_NAME = "neural-seam-runtime";
 const MCP_SERVER_ARGS = ["serve", "--project-from-cwd"];
-const HOOK_EVENTS = { SessionStart: "session-start", PreToolUse: "pre-tool-use", Stop: "stop" };
+// design-context rides on PreToolUse: with the plugin installed, `connect` removes the per-project
+// hooks, so a command missing here never runs for anyone who has the plugin.
+const HOOK_EVENTS = {
+  SessionStart: ["session-start"],
+  PreToolUse: ["pre-tool-use", "design-context"],
+  Stop: ["stop"],
+};
 
 function readJson(file) {
   if (!fs.existsSync(file)) { fail(rel(file), "missing"); return null; }
@@ -238,12 +244,14 @@ if (hooksFile) {
   if (typeof events !== "object" || events === null) {
     fail(w, "`hooks` must be an object keyed by lifecycle event");
   } else {
-    for (const [event, command] of Object.entries(HOOK_EVENTS)) {
+    for (const [event, required] of Object.entries(HOOK_EVENTS)) {
       const matchers = events[event];
       if (!Array.isArray(matchers) || matchers.length === 0) { fail(w, `event \`${event}\` is missing`); continue; }
       const commands = matchers.flatMap(m => (m?.hooks ?? []).map(h => h?.command));
-      if (!commands.includes(`neural-seam hook ${command}`)) {
-        fail(w, `event \`${event}\` must run \`neural-seam hook ${command}\`; the runtime recognises the hooks it manages by that command`);
+      for (const command of required) {
+        if (!commands.includes(`neural-seam hook ${command}`)) {
+          fail(w, `event \`${event}\` must run \`neural-seam hook ${command}\`; the runtime recognises the hooks it manages by that command`);
+        }
       }
     }
     for (const [event, matchers] of Object.entries(events)) {

@@ -6,6 +6,27 @@ Notable changes to the Neural Seam plugin for Claude Code. Format based on
 Entries are newest first and record what you can notice when you install or update: new behaviour,
 fixes, security changes, compatibility changes, and anything you have to do by hand.
 
+## [0.5.4] - 2026-09-29
+
+`/neural-seam:ns-start` now binds the project instead of pointing at a command it could not run, and
+a fourth hook hands your project's Design System to the agent.
+
+### Added
+
+- **Design System hook.** On the first write to a frontend file in a session, the plugin runs
+  `neural-seam hook design-context`, which reads your project's Design System from Neural Seam and
+  passes it to the agent as context. Once per session, time-bounded, and it never declines a tool
+  call: when no design is set, or the request fails, it does nothing. It needs a `neural-seam` runtime
+  that knows this hook; an older one exits without effect. See
+  [SECURITY.md](./SECURITY.md#what-the-hooks-do).
+
+### Fixed
+
+- **`ns-start` binds an unbound directory itself.** It used to name `/neural-seam:ns-connect` and
+  stop, but that command can only be run by the developer, so the start flow never got the directory
+  bound. It now takes the guided path the runtime returns, or runs `neural-seam connect <projectId>`
+  after you confirm, and checks the state again before moving on.
+
 ## [0.5.3] - 2026-09-08
 
 Documentation only. No change to the commands, the MCP registration or the hooks.

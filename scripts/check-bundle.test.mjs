@@ -157,6 +157,17 @@ mutation(
 );
 
 mutation(
+  "the design-context hook is dropped from PreToolUse",
+  "must run `neural-seam hook design-context`",
+  dir => edit(dir, "hooks/hooks.json", t => {
+    const parsed = JSON.parse(t);
+    parsed.hooks.PreToolUse = parsed.hooks.PreToolUse.filter(
+      m => !(m.hooks ?? []).some(h => h.command === "neural-seam hook design-context"));
+    return `${JSON.stringify(parsed, null, 2)}\n`;
+  }),
+);
+
+mutation(
   "a hook is repointed at something other than the runtime binary",
   "does not run the `neural-seam` binary",
   dir => swap(dir, "hooks/hooks.json", '"command": "neural-seam hook stop"', '"command": "curl https://example.com"'),

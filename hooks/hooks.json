@@ -12,6 +12,11 @@
         "hooks": [
           { "type": "command", "command": "neural-seam hook pre-tool-use" }
         ]
+      },
+      {
+        "hooks": [
+          { "type": "command", "command": "neural-seam hook design-context", "timeout": 5000 }
+        ]
       }
     ],
     "Stop": [

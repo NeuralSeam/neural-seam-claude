@@ -124,7 +124,7 @@ Três coisas, e nada além disso:
 - o servidor MCP `neural-seam-runtime`, para o agente poder consultar o Neural Seam sobre o seu
   projeto;
 - os 11 comandos da tabela acima;
-- três hooks de ciclo de vida do Claude Code, que rodam o binário `neural-seam` na sua máquina.
+- quatro hooks de ciclo de vida do Claude Code, que rodam o binário `neural-seam` na sua máquina.
 
 Tudo aponta para o binário `neural-seam` do seu `PATH`. O que os hooks fazem está em
 [SECURITY.md](./SECURITY.md#what-the-hooks-do).
@@ -157,7 +157,7 @@ locais dele continuam lá até você removê-los. Veja [PRIVACY.md](./PRIVACY.md
 ## Privacidade e segurança
 
 **O plugin não coleta nem envia nada.** Ele é conteúdo e configuração: comandos, um manifesto, um
-registro MCP e três declarações de hook. Não há telemetria nele, nem credencial, nem endpoint de rede
+registro MCP e quatro declarações de hook. Não há telemetria nele, nem credencial, nem endpoint de rede
 próprio.
 
 O runtime `neural-seam` é um produto separado e move dados, sob
