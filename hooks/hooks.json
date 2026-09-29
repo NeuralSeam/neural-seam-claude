@@ -15,14 +15,14 @@
       },
       {
         "hooks": [
-          { "type": "command", "command": "neural-seam hook design-context", "timeout": 5000 }
+          { "type": "command", "command": "neural-seam hook design-context", "timeout": 5 }
         ]
       }
     ],
     "Stop": [
       {
         "hooks": [
-          { "type": "command", "command": "neural-seam hook stop", "timeout": 5000 }
+          { "type": "command", "command": "neural-seam hook stop", "timeout": 5 }
         ]
       }
     ]

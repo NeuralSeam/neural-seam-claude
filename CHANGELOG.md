@@ -22,6 +22,10 @@ a fourth hook hands your project's Design System to the agent.
 
 ### Fixed
 
+- **Hook timeouts are now in seconds.** Claude Code reads a hook's `timeout` in seconds, but the
+  `Stop` hook declared `5000`, so it was allowed about 83 minutes instead of 5 seconds. The `Stop`
+  and Design System hooks now declare `5`. Update the `neural-seam` runtime too, so a project
+  connected without the plugin gets the same limit.
 - **`ns-start` binds an unbound directory itself.** It used to name `/neural-seam:ns-connect` and
   stop, but that command can only be run by the developer, so the start flow never got the directory
   bound. It now takes the guided path the runtime returns, or runs `neural-seam connect <projectId>`

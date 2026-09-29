@@ -237,6 +237,7 @@ if (mcp) {
 
 // ---------------------------------------------------------------- lifecycle hooks
 
+const MAX_HOOK_TIMEOUT_SECONDS = 60;
 const hooksFile = readJson(HOOKS_FILE);
 if (hooksFile) {
   const w = rel(HOOKS_FILE);
@@ -259,6 +260,11 @@ if (hooksFile) {
         if (h?.type !== "command") fail(w, `\`${event}\` declares a hook whose type is not \`command\``);
         if (typeof h?.command !== "string" || !h.command.startsWith("neural-seam ")) {
           fail(w, `\`${event}\` declares a hook that does not run the \`neural-seam\` binary`);
+        }
+        // Claude Code reads `timeout` in seconds. An earlier bundle declared 5000 meaning
+        // milliseconds, which the host granted as about 83 minutes.
+        if (h?.timeout !== undefined && !(Number.isInteger(h.timeout) && h.timeout > 0 && h.timeout <= MAX_HOOK_TIMEOUT_SECONDS)) {
+          fail(w, `\`${event}\` declares \`timeout: ${h.timeout}\`; the host reads it in seconds, so it must be an integer from 1 to ${MAX_HOOK_TIMEOUT_SECONDS}`);
         }
       }
     }
