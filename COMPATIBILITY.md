@@ -95,6 +95,20 @@ manifest. `scripts/check-bundle.mjs` fails if it is ever declared again, and
 on a plugin in this state, and `claude plugin details` prints its full inventory; only
 `claude plugin list` reports the load error.
 
+### Hook timeouts are in seconds
+
+Claude Code reads a hook's `timeout` in seconds. Measured on **2.1.285** with a hook that sleeps for
+30 seconds, against a one-prompt run that took 27 seconds without it:
+
+| Hook `timeout` | Run time | Reading |
+| --- | --- | --- |
+| none | 27 s | baseline |
+| `3` | 34 s | cancelled after about 3 seconds |
+| `60` | 57 s | the hook ran its full 30 seconds |
+
+Up to 0.5.3 this plugin declared `5000` on the `Stop` hook, which the host allowed about 83 minutes.
+Its hooks now declare `5`, and `scripts/check-bundle.mjs` rejects a timeout outside 1 to 60.
+
 ## Reporting a combination that does not work
 
 Open an issue with the output of `claude --version` and `neural-seam version`, your operating system,
