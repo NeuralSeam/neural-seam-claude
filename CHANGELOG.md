@@ -6,6 +6,23 @@ Notable changes to the Neural Seam plugin for Claude Code. Format based on
 Entries are newest first and record what you can notice when you install or update: new behaviour,
 fixes, security changes, compatibility changes, and anything you have to do by hand.
 
+## [0.6.0] - 2026-10-01
+
+### Added
+
+- **`/neural-seam:ns-generate` can regenerate a backlog.** When a previous generation left cards tagged
+  `generated` that are still in `BACKLOG`, the command lists them (title, id, board, status) and asks
+  whether to keep them or regenerate. Regenerating deletes exactly those cards, after a dry run and
+  your explicit confirmation, and then generates a new batch. Cards you created by hand, or already
+  picked up, are never touched. This needs a `neural-seam` runtime that provides the
+  `delete_activities` tool; on an older runtime the command says so and generates as before.
+
+### Changed
+
+- **`/neural-seam:ns-generate` no longer creates the cards one by one after saving.** The runtime's
+  `save_insumos` now creates the backlog cards itself, in one batch, so the command stopped telling the
+  model to create each one again with `create_activity`.
+
 ## [0.5.4] - 2026-09-29
 
 `/neural-seam:ns-start` now binds the project instead of pointing at a command it could not run, and

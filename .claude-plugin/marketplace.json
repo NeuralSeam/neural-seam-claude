@@ -9,7 +9,7 @@
     {
       "name": "neural-seam",
       "source": "./",
-      "version": "0.5.4",
+      "version": "0.6.0",
       "description": "Connects Claude Code to Neural Seam: your project's spec, backlog, cards and per-path conventions over MCP, plus the /neural-seam:ns-* commands.",
       "author": {
         "name": "Neural Seam"

@@ -334,6 +334,31 @@ for (const file of commandFiles) {
   }
 }
 
+// ---------------------------------------------------------------- regenerate path
+
+// ns-generate can delete cards. Each term below is one guarantee of that path, and losing any of
+// them in an edit turns "regenerate" into a delete the developer never saw or never scoped: the dry
+// run that lists before anything is deleted, the token that binds the delete to that list, the
+// confirmation that only the developer can give, and the filter that keeps hand-made and started
+// cards out of reach.
+const REGENERATE_TERMS = [
+  ["delete_activities", "the runtime tool that owns the dry run and the token"],
+  ["dry_run", "the dry run that lists the cards before anything is deleted"],
+  ["confirm_token", "the token that binds the delete to the list the developer saw"],
+  ["explicit confirmation", "the developer's confirmation before the deleting call"],
+  ['"generated"', "the tag that keeps hand-made cards out of the selection"],
+  ['"BACKLOG"', "the status that keeps cards already picked up out of the selection"],
+];
+{
+  const file = path.join(COMMANDS_DIR, "ns-generate.md");
+  if (fs.existsSync(file)) {
+    const body = fs.readFileSync(file, "utf8");
+    for (const [term, why] of REGENERATE_TERMS) {
+      if (!body.includes(term)) fail(rel(file), `the regenerate path must name \`${term}\`: ${why}`);
+    }
+  }
+}
+
 // ---------------------------------------------------------------- content rules
 
 // Three sources of truth for one version, so they drift: a bumped manifest with no entry

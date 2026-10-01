@@ -117,7 +117,7 @@ name.
 | `/neural-seam:ns-connect [<id>]` | Project already exists: binds it to this folder. | yes |
 | `/neural-seam:ns-clone <id>` | Clones the project's code only. Idempotent. | yes |
 | `/neural-seam:ns-doctor` | Repairs the environment: sign in, language servers, MCP registration. | yes |
-| `/neural-seam:ns-generate` | Bootstraps the backlog: generates the artefacts and creates the cards. | yes |
+| `/neural-seam:ns-generate` | Bootstraps the backlog: generates the artefacts and creates the cards. Can also regenerate a backlog it generated before. | yes |
 | `/neural-seam:ns-list [status] [kind]` | Lists cards, grouped by status. | |
 | `/neural-seam:ns-open` | Shows the local dashboard link. | |
 | `/neural-seam:ns-exec <id>` | Renders the implementation prompt for a card. | yes |

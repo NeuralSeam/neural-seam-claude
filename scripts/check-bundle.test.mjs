@@ -303,6 +303,28 @@ const failures = [];
   }
 }
 
+// ---------------------------------------------------------------- regenerate path
+
+for (const [term, from, to] of [
+  ["delete_activities", "Call the `delete_activities` tool with", "Call the cleanup tool with"],
+  ["dry_run", "`status: \"BACKLOG\"` and `dry_run: true`", "`status: \"BACKLOG\"`"],
+  ["confirm_token", "and the `confirm_token` the dry run returned", ""],
+  ["explicit confirmation", "wait for their explicit confirmation of that list, then call", "call"],
+  ['"generated"', '`tag: "generated"`,', ""],
+  ['"BACKLOG"', '`status: "BACKLOG"` and ', ""],
+]) {
+  mutation(
+    `ns-generate drops \`${term}\` from the regenerate path`,
+    `the regenerate path must name \`${term}\``,
+    dir => {
+      edit(dir, "commands/ns-generate.md", text => {
+        if (!text.includes(from)) throw new Error(`commands/ns-generate.md: ${JSON.stringify(from)} not found`);
+        return text.replace(from, to).split(term).join("");
+      });
+    },
+  );
+}
+
 for (const { name, expect, mutate } of cases) {
   const dir = copyRepo();
   const kind = expect === null ? "accepts" : "rejects";
