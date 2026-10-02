@@ -19,6 +19,10 @@ cards that nobody has started, it can also regenerate: delete those cards and ge
    `status: "BACKLOG"` and `dry_run: true`. A dry run deletes nothing: it only lists the cards that
    match.
    - If the list is empty, go to step 3. The command then behaves exactly as a first generation.
+   - If the dry run comes back refused with `epic_has_children`, the earlier backlog has EPICs with
+     sub-activities. Show every EPIC and child the tool listed and ask whether to regenerate them
+     too. If they agree, repeat the dry run with `cascade: true` and continue from that list and its
+     `confirm_token`. Never pass `cascade: true` before the developer has seen those children.
    - If cards are listed, show every one of them (title, id, board, status) without summarising or
      dropping any, and ask whether to **regenerate** (delete those cards and generate a new batch) or
      **keep** them and continue. Do nothing until they choose.

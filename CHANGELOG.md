@@ -16,6 +16,9 @@ fixes, security changes, compatibility changes, and anything you have to do by h
   your explicit confirmation, and then generates a new batch. Cards you created by hand, or already
   picked up, are never touched. This needs a `neural-seam` runtime that provides the
   `delete_activities` tool; on an older runtime the command says so and generates as before.
+- **Regenerating a backlog that has EPICs asks before deleting their sub-activities.** The dry run
+  refuses an EPIC with sub-activities unless `cascade` is set, so the command now shows those
+  EPICs and their children and repeats the dry run with `cascade: true` only if you agree.
 
 ### Changed
 
