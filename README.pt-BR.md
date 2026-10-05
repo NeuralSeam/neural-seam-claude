@@ -98,7 +98,7 @@ do nome, não é enfeite.
 | `/neural-seam:ns-connect [<id>]` | O projeto já existe: vincula a esta pasta. | sim |
 | `/neural-seam:ns-clone <id>` | Clona só o código. Idempotente. | sim |
 | `/neural-seam:ns-doctor` | Repara o ambiente: login, language servers, registro MCP. | sim |
-| `/neural-seam:ns-generate` | Gera os insumos e cria os cards. | sim |
+| `/neural-seam:ns-generate` | Gera os insumos e cria os cards. Também regenera um backlog gerado antes. | sim |
 | `/neural-seam:ns-list [status] [kind]` | Lista os cards, agrupados por status. | |
 | `/neural-seam:ns-open` | Mostra o link do painel local. | |
 | `/neural-seam:ns-exec <id>` | Renderiza o prompt de implementação de um card. | sim |
