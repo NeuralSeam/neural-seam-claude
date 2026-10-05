@@ -142,7 +142,7 @@ Three things, and nothing else:
 
 - the `neural-seam-runtime` MCP server, so the agent can ask Neural Seam about your project;
 - the 11 commands above;
-- three Claude Code lifecycle hooks, which run the `neural-seam` binary on your machine.
+- four Claude Code lifecycle hooks, which run the `neural-seam` binary on your machine.
 
 All of it points at the `neural-seam` binary on your `PATH`. What the hooks do is in
 [SECURITY.md](./SECURITY.md#what-the-hooks-do).
@@ -172,7 +172,7 @@ local files stay until you remove them. See [PRIVACY.md](./PRIVACY.md).
 ## Privacy and security
 
 **The plugin collects nothing and sends nothing.** It is content and configuration: commands, a
-manifest, an MCP registration and three hook declarations. There is no telemetry in it, no
+manifest, an MCP registration and four hook declarations. There is no telemetry in it, no
 credential, and no network endpoint of its own.
 
 The `neural-seam` runtime is a separate product and does move data, under

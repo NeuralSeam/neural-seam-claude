@@ -11,12 +11,12 @@ separate product.
 **It collects nothing, stores nothing and sends nothing.**
 
 The plugin is content and configuration: command files, a plugin manifest, an MCP server
-registration and three hook declarations. It contains **no telemetry, no analytics, no identifier, no
+registration and four hook declarations. It contains **no telemetry, no analytics, no identifier, no
 credential and no network endpoint of its own**. There is nothing in it that can phone home, and it
 never handles or stores your credentials.
 
 Installing it adds three things to Claude Code: the `neural-seam-runtime` MCP server, the
-`/neural-seam:ns-*` commands, and three lifecycle hooks. All of them invoke the `neural-seam` binary
+`/neural-seam:ns-*` commands, and four lifecycle hooks. All of them invoke the `neural-seam` binary
 already on your `PATH`. The hooks are worth being explicit about, because a hook runs on its own
 schedule rather than when you ask; what each one does is in
 [SECURITY.md](./SECURITY.md#what-the-hooks-do).

@@ -45,14 +45,15 @@ Vulnerabilities in Claude Code itself belong to Anthropic.
 
 ## What the hooks do
 
-This plugin registers three Claude Code lifecycle hooks, so it is worth stating plainly what they
-are. All three run the `neural-seam` binary from your `PATH` and **make no network call of their
-own**.
+This plugin registers four Claude Code lifecycle hooks, so it is worth stating plainly what they
+are. All four run the `neural-seam` binary from your `PATH`. Three of them **make no network call**;
+the design-context hook makes exactly one, described in its row.
 
 | Event | Command | Effect you can observe |
 | --- | --- | --- |
 | `SessionStart` | `neural-seam hook session-start` | Prints a one-line status of the project bound to this directory. |
 | `PreToolUse` | `neural-seam hook pre-tool-use` | Can decline a tool call that would write while a read-only review is in progress. It does not modify your files. |
+| `PreToolUse` | `neural-seam hook design-context` | On the first write to a frontend file in a session, reads your project's Design System from Neural Seam (one request) and hands it to the agent as context. Once per session, time-bounded, never declines a tool call, and does nothing when no design is set or the request fails. |
 | `Stop` | `neural-seam hook stop` | Records session state locally. Time-bounded, and does not delay shutdown. |
 
 None of them is a telemetry hook. What the runtime does with what it records is covered by
