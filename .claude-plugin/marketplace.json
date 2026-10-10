@@ -24,6 +24,30 @@
         "ai-coding",
         "software-engineering"
       ]
+    },
+    {
+      "name": "session-radar",
+      "source": {
+        "source": "github",
+        "repo": "NeuralSeam/ns-session-radar",
+        "sha": "54233bfacca1fb28341d073b40b2648ef1e6892a"
+      },
+      "version": "0.2.0",
+      "description": "A mod that shows what Claude Code is doing, live: tool calls, subagents, MCP and web calls, and model requests with tokens and cache. Open it with /radar. Needs Claude Code 2.1.287 or later.",
+      "author": {
+        "name": "Neural Seam"
+      },
+      "homepage": "https://github.com/NeuralSeam/ns-session-radar",
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": [
+        "claude-code",
+        "claude-code-mod",
+        "observability",
+        "subagents",
+        "tokens",
+        "developer-tools"
+      ]
     }
   ]
 }
