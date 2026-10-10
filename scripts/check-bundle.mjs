@@ -190,20 +190,32 @@ if (market) {
     for (const [i, entry] of market.plugins.entries()) {
       const at = `plugins[${i}]`;
       if (!entry.name?.trim()) fail(w, `${at}.name must be a non-empty string`);
-      if (!entry.source?.trim()) fail(w, `${at}.source is required`);
-      else if (!fs.existsSync(path.join(ROOT, entry.source))) fail(w, `${at}.source points at a missing directory`);
       if (!entry.description?.trim()) fail(w, `${at}.description must be a non-empty string`);
-      // The runtime derives the install reference from `<plugin>@<marketplace>`, so a rename
-      // on one side and not the other breaks detection in silence.
-      if (manifest && entry.name && entry.name !== manifest.name) {
-        fail(w, `${at}.name is "${entry.name}" but the manifest declares "${manifest.name}"`);
+      if (typeof entry.source === "string") {
+        // This repository's own plugin.
+        if (!entry.source.trim()) fail(w, `${at}.source is required`);
+        else if (!fs.existsSync(path.join(ROOT, entry.source))) fail(w, `${at}.source points at a missing directory`);
+        // The runtime derives the install reference from `<plugin>@<marketplace>`, so a rename
+        // on one side and not the other breaks detection in silence.
+        if (manifest && entry.name && entry.name !== manifest.name) {
+          fail(w, `${at}.name is "${entry.name}" but the manifest declares "${manifest.name}"`);
+        }
+        // The host only WARNS here (measured): at install time the plugin manifest wins and the
+        // entry version is ignored, so a disagreement publishes a version nobody meant.
+        if (manifest?.version && entry.version && entry.version !== manifest.version) {
+          fail(w, `${at}.version is "${entry.version}" but the manifest declares "${manifest.version}"`);
+        }
+        if (manifest?.version && !entry.version) fail(w, `${at}.version is missing; mirror the manifest's "${manifest.version}"`);
+      } else if (entry.source?.source === "github") {
+        // A plugin published from another repository. Pinned by commit, like the CI actions: a
+        // branch or tag can be moved to point at different code, and a mod runs as the user.
+        if (!/^[\w.-]+\/[\w.-]+$/.test(entry.source.repo ?? "")) fail(w, `${at}.source.repo must be "owner/repo"`);
+        if (!/^[0-9a-f]{40}$/.test(entry.source.sha ?? "")) fail(w, `${at}.source.sha must pin a full 40-character commit`);
+        if (manifest && entry.name === manifest.name) fail(w, `${at}.name "${entry.name}" is this repository's own plugin`);
+        if (!SEMVER.test(entry.version ?? "")) fail(w, `${at}.version must be strict semver, mirroring that plugin's manifest`);
+      } else {
+        fail(w, `${at}.source must be a local path or a { "source": "github" } object`);
       }
-      // The host only WARNS here (measured): at install time the plugin manifest wins and the
-      // entry version is ignored, so a disagreement publishes a version nobody meant.
-      if (manifest?.version && entry.version && entry.version !== manifest.version) {
-        fail(w, `${at}.version is "${entry.version}" but the manifest declares "${manifest.version}"`);
-      }
-      if (manifest?.version && !entry.version) fail(w, `${at}.version is missing; mirror the manifest's "${manifest.version}"`);
     }
   }
 }

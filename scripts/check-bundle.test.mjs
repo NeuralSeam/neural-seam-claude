@@ -112,6 +112,27 @@ mutation(
 );
 
 mutation(
+  "a plugin from another repository is not pinned to a commit",
+  "must pin a full 40-character commit",
+  dir => edit(dir, ".claude-plugin/marketplace.json", t =>
+    t.replace(/,\s*"sha": "[0-9a-f]+"/, "")),
+);
+
+mutation(
+  "a plugin from another repository is not given as owner/repo",
+  'must be "owner/repo"',
+  dir => edit(dir, ".claude-plugin/marketplace.json", t =>
+    t.replace(/"repo": "[^"]+"/, '"repo": "https://github.com/x/y"')),
+);
+
+mutation(
+  "a marketplace entry has a source of a kind the gate does not check",
+  "must be a local path or",
+  dir => edit(dir, ".claude-plugin/marketplace.json", t =>
+    t.replace('"source": "github"', '"source": "url"')),
+);
+
+mutation(
   "the changelog does not carry the version being shipped",
   "newest entry is",
   // String.replace with a string pattern hits the first occurrence only, which is the newest
