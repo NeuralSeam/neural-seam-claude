@@ -192,3 +192,6 @@ MIT, veja [LICENSE](./LICENSE). Ela cobre o conteúdo deste repositório, que é
 Claude Code. Ela **não** cobre o runtime `neural-seam`, que é um produto comercial separado com
 licença própria, e não concede direitos sobre o nome nem sobre a marca Neural Seam, veja
 [TRADEMARKS.md](./TRADEMARKS.md).
+
+**Titular:** Caio de Souza e Silva. O Neural Seam é registrado no Instituto Nacional da Propriedade
+Industrial (INPI) sob o nº BR512026005698-5, veja [NOTICE](./NOTICE).

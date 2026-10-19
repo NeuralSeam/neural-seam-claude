@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Copyright (c) 2026 Caio de Souza e Silva
+// SPDX-License-Identifier: MIT
+
 // Static gate for this plugin. The content it ships is markdown and JSON: nothing compiles it, so
 // without these checks the first thing to find a broken file is Claude Code, on a developer's
 // machine, usually in silence.

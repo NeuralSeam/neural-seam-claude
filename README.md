@@ -234,5 +234,8 @@ Claude Code integration. It does not cover the `neural-seam` runtime, which is a
 product under its own licence, and it grants no rights to the Neural Seam name or logo, see
 [TRADEMARKS.md](./TRADEMARKS.md).
 
+**Copyright:** Caio de Souza e Silva. Neural Seam is registered with the Brazilian National Institute
+of Industrial Property (INPI) under no. BR512026005698-5, see [NOTICE](./NOTICE).
+
 Should the licence of this repository ever change, **any version already published under MIT stays
 under MIT**. A licence cannot be retracted from a release that was made under it.

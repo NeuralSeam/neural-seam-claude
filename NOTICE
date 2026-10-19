@@ -1,0 +1,11 @@
+Neural Seam
+Copyright (c) 2026 Caio de Souza e Silva
+
+Neural Seam is a computer program registered with the Brazilian National
+Institute of Industrial Property (INPI) under no. BR512026005698-5.
+
+This repository, the Neural Seam integration for Claude Code, is part of that
+program and is licensed under the MIT License (see LICENSE). The MIT License
+covers the content of this repository only. It does not cover the neural-seam
+runtime, which is a separate commercial product under its own licence, and it
+grants no rights to the Neural Seam name or logo (see TRADEMARKS.md).

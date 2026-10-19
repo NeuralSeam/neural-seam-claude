@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// Copyright (c) 2026 Caio de Souza e Silva
+// SPDX-License-Identifier: MIT
+
 // Mutation proofs for `check-bundle.mjs`.
 //
 // A gate nobody has seen fail is a gate nobody knows works. Each case below copies the whole
