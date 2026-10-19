@@ -25,6 +25,9 @@ fixes, security changes, compatibility changes, and anything you have to do by h
 - **`/neural-seam:ns-generate` no longer creates the cards one by one after saving.** The runtime's
   `save_insumos` now creates the backlog cards itself, in one batch, so the command stopped telling the
   model to create each one again with `create_activity`.
+- **The copyright notice names the holder.** `LICENSE` now reads "Copyright (c) 2026 Caio de Souza e
+  Silva" instead of the brand, and the new `NOTICE` records that Neural Seam is registered with the
+  Brazilian INPI under no. BR512026005698-5. The licence is still MIT and nothing you install changes.
 
 ## [0.5.4] - 2026-09-29
 
