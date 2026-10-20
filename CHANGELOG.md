@@ -6,6 +6,20 @@ Notable changes to the Neural Seam plugin for Claude Code. Format based on
 Entries are newest first and record what you can notice when you install or update: new behaviour,
 fixes, security changes, compatibility changes, and anything you have to do by hand.
 
+## [0.6.1] - 2026-10-20
+
+### Changed
+
+- **Binding a project happens in the terminal.** `/neural-seam:ns-connect` and `/neural-seam:ns-start` present the link
+  that `check_setup` returns, which opens the Neural Seam web app, where you find the project
+  identifier. Nothing is bound from the browser: the command then runs `neural-seam connect <projectId>`,
+  which fetches the signed manifest, verifies it and binds the current directory.
+- **`/neural-seam:ns-create` says how a new project reaches this directory.** Creating it in the web app binds
+  nothing here; the web app shows the `neural-seam connect <projectId>` command to run in this
+  directory.
+- **`/neural-seam:ns-open` shows the dashboard of the Neural Seam web app.** The command no longer describes a
+  dashboard served locally or a tray app.
+
 ## [0.6.0] - 2026-10-01
 
 ### Added

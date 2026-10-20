@@ -12,13 +12,13 @@ it bound to this directory. It writes the binding; it does not fetch code. For t
 
 ## Act now
 
-1. **Guided path, nothing to type.** Call the `check_setup` tool of the `neural-seam-runtime` MCP
-   server. Present the `message` and any URL it returned, **exactly as returned** - never build a URL,
-   never assume a port. The developer picks the project there, and the binding is written to this
-   directory, so no identifier has to be typed.
-2. **Terminal path.** If `$ARGUMENTS` carries an identifier, or the browser is not available, run
-   `neural-seam connect <projectId>`. It fetches the signed manifest, verifies the signature, and
-   writes the binding into the current directory.
+1. **Find the identifier.** If `$ARGUMENTS` carries one, go to step 2. Otherwise call the
+   `check_setup` tool of the `neural-seam-runtime` MCP server and present the `message` and any URL it
+   returned, **exactly as returned** - never build a URL, never assume a port. The URL opens the
+   Neural Seam web app, where the developer finds the project identifier. Nothing is bound from the
+   browser: wait for the developer to give you the identifier.
+2. **Bind from the terminal.** Run `neural-seam connect <projectId>`. It fetches the signed manifest,
+   verifies the signature, and writes the binding into the current directory.
 3. **A refusal is a result.** The runtime refuses to bind when this directory is not a clone of the
    project's repository, and it writes nothing. Show the refusal **as it came** and follow it to
    `/neural-seam:ns-clone`. Do not insist, do not work around it, and never report success.
