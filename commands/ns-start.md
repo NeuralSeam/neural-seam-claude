@@ -20,19 +20,18 @@ have run themselves (`/neural-seam:ns-create`, `/neural-seam:ns-generate`, and s
 2. Take the next step **from the response**, not from a script in this file:
    - present the `message` the runtime returned, and any URL it carries, **exactly as returned**.
      Never build a URL and never assume a port.
-   - when the step belongs to the developer (signing in, creating or picking a project in the browser,
-     running a command in the terminal), hand it over and **stop there**. Wait for the developer's
-     explicit confirmation before going further.
+   - when the step belongs to the developer (signing in, creating a project or finding its identifier
+     in the browser, running a command in the terminal), hand it over and **stop there**. Wait for the
+     developer's explicit confirmation before going further.
    - when the step matches one of the commands in `/neural-seam:ns-help`, name that command.
 3. **When the response says this directory is not bound yet, bind it here.** Do not name
    `/neural-seam:ns-connect` and stop.
-   - **Guided path:** present the `message` and URL from `check_setup` exactly as returned. The
-     developer picks the project there and the runtime writes the binding. Wait for their
-     confirmation.
-   - **Terminal path:** when the developer already gave a project identifier, or the browser is not
-     available, ask for explicit confirmation and then run `neural-seam connect <projectId>`. It
-     fetches the signed manifest, verifies the signature and writes the binding into the current
-     directory. Present its output as it came.
+   - **Find the identifier:** unless the developer already gave one, present the `message` and URL
+     from `check_setup` exactly as returned. The URL opens the web app, where the developer finds the
+     project identifier; nothing is bound from the browser. Wait for them to give it.
+   - **Bind:** with the identifier in hand, ask for explicit confirmation and then run
+     `neural-seam connect <projectId>`. It fetches the signed manifest, verifies the signature and
+     writes the binding into the current directory. Present its output as it came.
    - Then call `check_setup` again and confirm from the response that the directory is bound. Never
      report the binding from the command having run.
 4. If the runtime refuses to bind because this directory is not a clone of the project's repository,
